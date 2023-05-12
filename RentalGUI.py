@@ -4,9 +4,11 @@ from RentalModel import *
 class Rental_GUI:
     def __init__(self):
 
+        #initialising tkinter window
         self.window = tkinter.Tk()
         self.window.title("New York Room Type Predictor")
 
+        # creating frames for each non target attribute
         self.first_frame = tkinter.Frame()
         self.second_frame = tkinter.Frame()
         self.third_frame = tkinter.Frame()
@@ -20,7 +22,7 @@ class Rental_GUI:
         self.output_frame = tkinter.Frame()
 
 
-        # neighbourhood
+        # neighbourhood, uses option menu due to large of a variety of neighbourhoods
         self.neighbourhood_label = tkinter.Label(self.first_frame, text="Property Neighbourhood: ")
         self.click_neighbourhood_var = tkinter.StringVar()
         self.click_neighbourhood_var.set("Brooklyn")
@@ -104,12 +106,14 @@ class Rental_GUI:
         self.button_frame.pack()
         self.output_frame.pack()
 
+        # main loop for window
         tkinter.mainloop()
 
+    # predicting function, uses predictive alg
     def predict_room(self):
-
         self.results.delete(0.0, tkinter.END)
 
+        # getting inputs
         neighbourhood = self.click_neighbourhood_var.get()
         lat = self.latitude_entry.get()
         long = self.longitude_entry.get()
@@ -120,6 +124,7 @@ class Rental_GUI:
         availability = self.availability_entry.get()
         price = self.price_entry.get()
 
+        # dictionary of limited neighbourhoods
         neighbourhoods = {
             "Brooklyn": 0,
             "Manhattan": 1,
@@ -127,14 +132,17 @@ class Rental_GUI:
             "Harlem": 3
         }
 
+        # getting value from key
         neighbourhood = neighbourhoods[neighbourhood]
 
+        # creating list for prediction
         property_info = (neighbourhood, lat, long, dOC_2019, min_nights, num_rev, monthly_rev,
                          availability, price)
+        # putting user input into model
         room_type_prediction = best_model.predict([property_info])
 
         # 4 types 0 = house, 1 = hotel, 2= private, 3 = shared
-
+        # converts numerical representation to actual room type
         if room_type_prediction == 0.0:
             room_type = "Entire house/apt"
         elif room_type_prediction == 1.0:
@@ -144,6 +152,7 @@ class Rental_GUI:
         else:
             room_type = "Shared room"
 
+        # outputs result
         self.results.insert("1.0", f"Room type is predicted to be {room_type}")
 
 my_rental_GUI = Rental_GUI()

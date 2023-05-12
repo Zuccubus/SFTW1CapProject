@@ -28,11 +28,12 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
 
+# reading dataset
 my_property_data = pd.read_csv("NY Realstate Pricing.csv")
 
 predict = "room_type"
 
-
+# pre processing the data
 le = preprocessing.LabelEncoder()
 F1 = le.fit_transform(list(my_property_data["F1"])) # identifier
 id = le.fit_transform(list(my_property_data["id"])) # identifier
@@ -48,6 +49,7 @@ price = le.fit_transform(list(my_property_data["price"])) # price in USD
 room_type = le.fit_transform(list(my_property_data["room_type"]))
 # 4 types 0 = house, 1 = hotel, 2= private, 3 = shared
 
+# seperating attributes from target
 x = list(zip(neighbourhood, latitude, longitude, days_occupied_in_2019, minimum_nights, number_of_reviews,
              reviews_per_month, availability_2020, price))
 y = list(room_type)
@@ -59,7 +61,7 @@ scoring = "accuracy"
 
 import sklearn.model_selection
 
-# seperating dataset into test set (80%) and train set (20%)
+# seperating dataset into test set and train set, 80-20 split
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.20, random_state=seed)
 
 # list of models used
@@ -74,7 +76,7 @@ predictive_models.append(("GBM", GradientBoostingClassifier()))
 model_results = []
 model_names = []
 
-
+# determining best model
 print("Performance on Training set")
 # go through model list and use each one
 for name, model in predictive_models:
@@ -86,7 +88,7 @@ for name, model in predictive_models:
     # outputing results of model
     print(f"{name}: {cv_results.mean():,.6f} ({cv_results.std():,.6f})\n")
 
-
+# bar graph comparison of models
 fig = pyplot.figure()
 fig.suptitle("Predictive Algorithm Comparison")
 ax = fig.add_subplot(111)
@@ -97,6 +99,7 @@ pyplot.show()
 predictive_models.append(("RF", RandomForestClassifier))
 randf = RandomForestClassifier()
 
+# assinging best model
 best_model = randf
 best_model.fit(x_train, y_train)
 y_pred = best_model.predict(x_test)
@@ -104,11 +107,13 @@ print(f"Best Model Accuracy Score on Test Set: {accuracy_score(y_test, y_pred)}"
 
 print(classification_report(y_test, y_pred))
 
+# creating confusion matrix
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 cm = confusion_matrix(y_test, y_pred)
 cm_display = ConfusionMatrixDisplay(confusion_matrix=cm)
 cm_display.plot()
 pyplot.show()
 
+# outputting test results
 for x in range(len(y_pred)):
     print(f"Predicted: {y_pred[x]} Actual: {y_test[x]} Data: {x_test[x]}")

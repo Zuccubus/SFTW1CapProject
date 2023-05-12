@@ -22,9 +22,13 @@ class Rental_GUI:
 
         # neighbourhood
         self.neighbourhood_label = tkinter.Label(self.first_frame, text="Property Neighbourhood: ")
-        self.neighbourhood_entry = tkinter.Entry(self.first_frame, bg="light blue", bd=2, width=10)
+        self.click_neighbourhood_var = tkinter.StringVar()
+        self.click_neighbourhood_var.set("Brooklyn")
+        self.neighbourhood_input = tkinter.OptionMenu(self.first_frame, self.click_neighbourhood_var, "Brooklyn",
+                                                      "Manhattan", "Queens", "Harlem")
         self.neighbourhood_label.pack(side="left")
-        self.neighbourhood_entry.pack(side="left")
+        self.neighbourhood_input.pack(side="left")
+
 
         # lat
         self.latitude_label = tkinter.Label(self.second_frame, text="Enter Latitude: ")
@@ -106,7 +110,7 @@ class Rental_GUI:
 
         self.results.delete(0.0, tkinter.END)
 
-        neighbourhood = self.neighbourhood_entry.get()
+        neighbourhood = self.click_neighbourhood_var.get()
         lat = self.latitude_entry.get()
         long = self.longitude_entry.get()
         dOC_2019 = self.dOC_2019_entry.get()
@@ -116,6 +120,14 @@ class Rental_GUI:
         availability = self.availability_entry.get()
         price = self.price_entry.get()
 
+        neighbourhoods = {
+            "Brooklyn": 0,
+            "Manhattan": 1,
+            "Queens": 2,
+            "Harlem": 3
+        }
+
+        neighbourhood = neighbourhoods[neighbourhood]
 
         property_info = (neighbourhood, lat, long, dOC_2019, min_nights, num_rev, monthly_rev,
                          availability, price)
@@ -132,6 +144,6 @@ class Rental_GUI:
         else:
             room_type = "Shared room"
 
-        self.results.insert(f"Room type is predicted to be {room_type}")
+        self.results.insert("1.0", f"Room type is predicted to be {room_type}")
 
 my_rental_GUI = Rental_GUI()

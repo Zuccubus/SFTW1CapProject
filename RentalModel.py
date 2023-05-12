@@ -112,4 +112,3 @@ pyplot.show()
 
 for x in range(len(y_pred)):
     print(f"Predicted: {y_pred[x]} Actual: {y_test[x]} Data: {x_test[x]}")
-

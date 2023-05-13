@@ -27,7 +27,7 @@ class Rental_GUI:
         self.click_neighbourhood_var = tkinter.StringVar()
         self.click_neighbourhood_var.set("Brooklyn")
         self.neighbourhood_input = tkinter.OptionMenu(self.first_frame, self.click_neighbourhood_var, "Brooklyn",
-                                                      "Manhattan", "Queens", "Harlem")
+                                                      "Manhattan", "Queens", "Harlem", "Bedford-Stuyvesant")
         self.neighbourhood_label.pack(side="left")
         self.neighbourhood_input.pack(side="left")
 

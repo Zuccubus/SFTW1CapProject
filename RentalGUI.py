@@ -129,7 +129,8 @@ class Rental_GUI:
             "Brooklyn": 0,
             "Manhattan": 1,
             "Queens": 2,
-            "Harlem": 3
+            "Harlem": 3,
+            "Bedford-Stuyvesant": 4
         }
 
         # getting value from key
